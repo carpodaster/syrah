@@ -15,6 +15,14 @@ RSpec.describe Syrah::Controller do
     end
   end
 
+  context 'with helper methods exposed to its views' do
+    subject { klass.new.view_context }
+
+    %w(resource resources resource_model resource_name parent_resource).each do |helper|
+      it { is_expected.to respond_to helper }
+    end
+  end
+
   class ::DummyModel
     attr_accessor :test1, :test2
     def initialize(attributes = {})

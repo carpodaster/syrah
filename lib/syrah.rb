@@ -6,6 +6,10 @@ module Syrah
 
     extend ActiveSupport::Concern
 
+    included do
+      helper_method :resource, :resources, :resource_model, :resource_name, :parent_resource
+    end
+
     module ClassMethods
       attr_writer :parent_models
 
