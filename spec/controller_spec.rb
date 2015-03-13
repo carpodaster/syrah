@@ -24,23 +24,18 @@ RSpec.describe Syrah::Controller do
   end
 
   describe '#resource_name' do
-    let!(:controller) { build_controller('DummiesController').new }
-    subject { controller.send(:resource_name) }
+    shared_examples_for 'extracts name from constant' do |constant, name|
+      let!(:controller) { build_controller(constant).new }
+      subject { controller.send(:resource_name) }
 
-    context 'for a top-level controller' do
-      it { is_expected.to eql 'Dummy' }
+      context "extracting #{name.inspect} from #{constant.inspect}" do
+        it { is_expected.to eql name }
+      end
     end
 
-    context 'for a namespaced controller' do
-      let(:controller) { build_controller('My::Namespaces::DummiesController').new }
-      it { is_expected.to eql 'Dummy' }
-    end
-
-    context 'for a singular resource controller' do
-      let(:controller) { build_controller('DummyController').new }
-      it { is_expected.to eql 'Dummy' }
-    end
-
+    it_behaves_like 'extracts name from constant', 'DummiesController', 'Dummy'
+    it_behaves_like 'extracts name from constant', 'My::Namepace::DummiesController', 'Dummy'
+    it_behaves_like 'extracts name from constant', 'DummyController', 'Dummy'
   end
 
   class ::DummyModel
