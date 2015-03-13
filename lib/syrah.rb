@@ -22,5 +22,12 @@ module Syrah
       end
     end
 
+    protected
+
+    def resource_name
+      @resource_name ||= self.class.to_s.split('::').last.gsub(/Controller\Z/, '').singularize
+    end
+
+
   end
 end

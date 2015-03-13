@@ -23,6 +23,26 @@ RSpec.describe Syrah::Controller do
     end
   end
 
+  describe '#resource_name' do
+    let!(:controller) { build_controller('DummiesController').new }
+    subject { controller.send(:resource_name) }
+
+    context 'for a top-level controller' do
+      it { is_expected.to eql 'Dummy' }
+    end
+
+    context 'for a namespaced controller' do
+      let(:controller) { build_controller('My::Namespaces::DummiesController').new }
+      it { is_expected.to eql 'Dummy' }
+    end
+
+    context 'for a singular resource controller' do
+      let(:controller) { build_controller('DummyController').new }
+      it { is_expected.to eql 'Dummy' }
+    end
+
+  end
+
   class ::DummyModel
     attr_accessor :test1, :test2
     def initialize(attributes = {})
