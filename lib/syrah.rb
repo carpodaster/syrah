@@ -24,10 +24,13 @@ module Syrah
 
     protected
 
+    def parent_resource_name
+      @parent_resource_name ||= self.class.parent_models.detect{|model| params["#{model}_id"].present? }.to_s
+    end
+
     def resource_name
       @resource_name ||= self.class.to_s.split('::').last.gsub(/Controller\Z/, '').singularize
     end
-
 
   end
 end
