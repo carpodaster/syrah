@@ -82,6 +82,70 @@ RSpec.describe Syrah::Controller do
 
   end
 
+  describe '#parent?' do
+    subject { build_controller.new }
+
+    it 'returns false if parent_resource_name is blank' do
+      skip
+    end
+
+    it 'returns true if parent_resource_name is present' do
+      skip
+    end
+  end
+
+  describe '#parent_model' do
+    skip
+  end
+
+  describe '#parent_resource' do
+    skip
+  end
+
+  describe '#resource_association_name' do
+    skip
+  end
+
+  describe '#resource_association' do
+    skip
+  end
+
+  describe '#resources' do
+    skip
+
+    # TODO or name it collection?
+  end
+
+  describe '#resource_name' do
+    skip
+  end
+
+  describe '#resource_model' do
+    skip
+  end
+
+  describe '#resource' do
+    skip
+  end
+
+  describe '#resource_instance_variable' do
+    skip
+  end
+
+  describe '#resource_instance_variable_get_or_default' do
+    skip
+  end
+
+  describe '#build_resource' do
+    skip
+  end
+
+  describe '#object_params' do
+    context 'with strong parameters' do
+      skip
+    end
+  end
+
   class ::DummyModel
     attr_accessor :test1, :test2
     def initialize(attributes = {})
