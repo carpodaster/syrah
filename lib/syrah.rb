@@ -32,6 +32,10 @@ module Syrah
       @parent_resource_name ||= self.class.parent_models.detect{|model| params["#{model}_id"].present? }.to_s
     end
 
+    def parent_resource
+      @parent_resource ||= parent_model.find(params["#{parent_resource_name}_id"])
+    end
+
     def resource_name
       @resource_name ||= self.class.to_s.split('::').last.gsub(/Controller\Z/, '').singularize
     end

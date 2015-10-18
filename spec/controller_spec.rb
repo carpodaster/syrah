@@ -147,7 +147,30 @@ RSpec.describe Syrah::Controller do
   end
 
   describe '#parent_resource' do
-    skip
+    let(:controller) do
+      build_controller(name: 'FoobarsController') { belongs_to :foobar }
+    end
+
+    context 'without a parent' do
+      it 'will outright fail' do
+        expect { subject.send(:parent_resource) }.to raise_error NoMethodError
+      end
+    end
+
+    context 'with a parent model' do
+      let(:id) { 42 }
+      let(:params) { { 'foobar_id' => id } }
+      let(:parent_model) { double('Someone\'s Parent') }
+
+      before do
+        expect(subject).to receive(:parent_model).and_return parent_model
+      end
+
+      it 'finds by id parameter' do
+        expect(parent_model).to receive(:find).with(id)
+        subject.send :parent_resource
+      end
+    end
   end
 
   describe '#resource_association_name' do
