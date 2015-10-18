@@ -40,6 +40,10 @@ module Syrah
       @resource_name ||= self.class.to_s.split('::').last.gsub(/Controller\Z/, '').singularize
     end
 
+    def resource_model
+      @resource_model ||= resource_name.constantize
+    end
+
     def parent?
       parent_resource_name.present?
     end

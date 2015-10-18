@@ -214,7 +214,20 @@ RSpec.describe Syrah::Controller do
   end
 
   describe '#resource_model' do
-    skip
+    let(:controller) { build_controller(name: "MyExamplesController") }
+
+    subject { controller.new.send(:resource_model) }
+
+    context 'with an undefined constant' do
+      it { expect { subject }.to raise_error NameError }
+    end
+
+    context 'with the model being defined' do
+      let(:my_model) { Class.new }
+      before { stub_const 'MyExample', my_model }
+
+      it { expect(subject).to eql my_model }
+    end
   end
 
   describe '#resource' do
