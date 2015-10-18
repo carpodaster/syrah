@@ -216,24 +216,4 @@ RSpec.describe Syrah::Controller do
     end
   end
 
-  class ::DummyModel
-    attr_accessor :test1, :test2
-    def initialize(attributes = {})
-      attributes.each do |attr, value|
-        self.send(:"#{attr}=", value)
-      end
-    end
-  end
-
-  class ::DummyParentModel < DummyModel; end
-
-  class DummyModelsController < ActionController::Base
-    include Syrah::Controller
-  end
-
-  module Nested
-    class DummyModelsController < ActionController::Base
-      include Syrah::Controller
-    end
-  end
 end
