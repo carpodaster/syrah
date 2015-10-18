@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Syrah::Controller do
   let(:controller) { build_controller }
+  let(:params) { Hash.new }
+  subject { controller.new(params) }
 
   describe '.parent_models' do
     it 'returns an empty list by default' do
@@ -40,8 +42,6 @@ RSpec.describe Syrah::Controller do
   end
 
   describe '#parent_resource_name' do
-    subject { controller.new }
-
     context 'without a belongs_to association set' do
       let(:controller) { build_controller }
 
@@ -55,27 +55,30 @@ RSpec.describe Syrah::Controller do
         build_controller { belongs_to :foo_bar }
       end
 
-      it 'returns nil for missing corresponding params key' do
-        allow(subject).to receive(:params).and_return({})
-        expect(subject.send(:parent_resource_name)).to be_blank
+      context 'with empty params hash' do
+        it 'returns nil for missing corresponding params key' do
+          expect(subject.send(:parent_resource_name)).to be_blank
+        end
       end
 
-      it 'returns foo for missing corresponding params key' do
-        params = { foo_bar_id: 42 }.with_indifferent_access
-        allow(subject).to receive(:params).and_return(params)
-        expect(subject.send(:parent_resource_name)).to eql 'foo_bar'
+      context 'with corresponding _id key in params hash' do
+        let(:params) { { foo_bar_id: 42 }.with_indifferent_access }
+
+        it 'returns the belongs_to reference' do
+          expect(subject.send(:parent_resource_name)).to eql 'foo_bar'
+        end
       end
 
     end
 
     context 'with more than one belongs_to statement' do
+      let(:params) { { foo_bar_id: 42, hello_world_id: 'o hai' }.with_indifferent_access }
+
       let(:controller) do
         build_controller { belongs_to :hello_world, :foo_bar }
       end
 
       it 'returns the first matching corresponding params key' do
-        params = { foo_bar_id: 42, hello_world_id: 'o hai' }.with_indifferent_access
-        allow(subject).to receive(:params).and_return(params)
         expect(subject.send(:parent_resource_name)).to eql 'hello_world'
       end
     end
