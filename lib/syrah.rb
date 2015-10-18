@@ -24,6 +24,10 @@ module Syrah
 
     protected
 
+    def parent_model
+      @parent_model ||= parent_resource_name.camelize.constantize if parent?
+    end
+
     def parent_resource_name
       @parent_resource_name ||= self.class.parent_models.detect{|model| params["#{model}_id"].present? }.to_s
     end

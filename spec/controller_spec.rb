@@ -109,12 +109,41 @@ RSpec.describe Syrah::Controller do
         let(:params) { { 'foobar_id' => 42 } }
         it { is_expected.to be_parent }
       end
-
     end
   end
 
   describe '#parent_model' do
-    skip
+    subject { controller.new(params).send(:parent_model) }
+
+    context 'without parents defined' do
+      let(:controller) { build_controller }
+      it { is_expected.to be_nil }
+    end
+
+    context 'with parents defined' do
+      let(:controller) do
+        build_controller { belongs_to :foobar }
+      end
+
+      context 'with parent *_id parameter missing in params' do
+        it { is_expected.to be_nil }
+      end
+
+      context 'with parent *_id parameter present in params' do
+        let(:params) { { 'foobar_id' => 42 } }
+
+        context 'without the constant being defined' do
+          it 'raises an error' do
+            expect { subject }.to raise_error NameError
+          end
+        end
+
+        context 'with the corresponding constant being defined' do
+          before { stub_const 'Foobar', Class.new }
+          it { is_expected.to eql Foobar }
+        end
+      end
+    end
   end
 
   describe '#parent_resource' do
