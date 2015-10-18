@@ -136,7 +136,29 @@ RSpec.describe Syrah::Controller do
   end
 
   describe '#resource_name' do
-    skip
+    subject { controller.new(params).view_context }
+    let(:controller) { build_controller name: name }
+
+    shared_examples 'returns "MyExample"' do |msg|
+      it [msg, "returns 'MyExample'"].to_sentence do
+        expect(subject.resource_name).to eql 'MyExample'
+      end
+    end
+
+    context 'with a top-level controller' do
+      let(:name) { 'MyExamplesController' }
+      it_behaves_like 'returns "MyExample"'
+    end
+
+    context 'with a namespaced controller' do
+      let(:name) { 'Foo::MyExamplesController' }
+      it_behaves_like 'returns "MyExample"', 'removes the namespace'
+    end
+
+    context 'with nested namespaces' do
+      let(:name) { 'Foo::Bar::MyExamplesController' }
+      it_behaves_like 'returns "MyExample"', 'removes all namespaces'
+    end
   end
 
   describe '#resource_model' do
