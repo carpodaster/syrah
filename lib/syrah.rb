@@ -7,7 +7,7 @@ module Syrah
     extend ActiveSupport::Concern
 
     included do
-      helper_method :resource, :resources, :resource_model, :resource_name, :parent_resource
+      helper_method :resource, :resources, :resource_model, :resource_name, :parent_resource, :parent?
     end
 
     module ClassMethods
@@ -30,6 +30,10 @@ module Syrah
 
     def resource_name
       @resource_name ||= self.class.to_s.split('::').last.gsub(/Controller\Z/, '').singularize
+    end
+
+    def parent?
+      parent_resource_name.present?
     end
 
   end

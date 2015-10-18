@@ -21,7 +21,7 @@ RSpec.describe Syrah::Controller do
   context 'with helper methods exposed to its views' do
     subject { controller.new.view_context }
 
-    %w(resource resources resource_model resource_name parent_resource).each do |helper|
+    %w(resource resources resource_model resource_name parent_resource parent?).each do |helper|
       it { is_expected.to respond_to helper }
     end
   end
@@ -86,14 +86,30 @@ RSpec.describe Syrah::Controller do
   end
 
   describe '#parent?' do
-    subject { build_controller.new }
+    subject { controller.new(params).view_context }
 
-    it 'returns false if parent_resource_name is blank' do
-      skip
+    context 'with no parents defined' do
+      let(:controller) { build_controller }
+      let(:params) { Hash.new }
+
+      it { is_expected.not_to be_parent }
     end
 
-    it 'returns true if parent_resource_name is present' do
-      skip
+    context 'with parent defined' do
+      let(:controller) do
+        build_controller { belongs_to :foobar }
+      end
+
+      context 'with corresponding *_id key missing in params hash' do
+        let(:params) { Hash.new }
+        it { is_expected.not_to be_parent }
+      end
+
+      context 'with corresponding *_id key present in params hash' do
+        let(:params) { { 'foobar_id' => 42 } }
+        it { is_expected.to be_parent }
+      end
+
     end
   end
 
