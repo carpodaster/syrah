@@ -233,10 +233,24 @@ RSpec.describe Syrah::Controller do
     skip
   end
 
-  describe '#object_params' do
-    context 'with strong parameters' do
-      skip
+  describe '#object_parameters' do
+    shared_examples_for 'delegates to a convention-based method' do |controller_name, spy_method:|
+      let(:controller) { build_controller(name: controller_name) }
+
+      before do
+        controller.class_eval "def #{spy_method}; end"
+        expect(subject).to receive(spy_method)
+      end
+
+      it 'delegates to a guessed *_params method' do
+        subject.send :object_parameters
+      end
     end
+
+    it_behaves_like 'delegates to a convention-based method', 'FoobarsController',    spy_method: 'foobar'
+    it_behaves_like 'delegates to a convention-based method', 'FooBarsController',    spy_method: 'foo_bar'
+    it_behaves_like 'delegates to a convention-based method', 'F::BarsController',    spy_method: 'bar'
+    it_behaves_like 'delegates to a convention-based method', 'F::B::FoosController', spy_method: 'foo'
   end
 
 end

@@ -44,5 +44,24 @@ module Syrah
       parent_resource_name.present?
     end
 
+    # Delegate to <snakecased resource name>_params in including controller.
+    # strong_parameters handling is expected to happen there.
+    #
+    # Example:
+    #
+    #     class FooBarsController < ApplicationController
+    #       include Syrah::Controller
+    #
+    #       protected
+    #
+    #       def foo_bar_params
+    #         params.require(:foo_bar).permit(:lol)
+    #       end
+    #     end
+    #
+    def object_parameters
+      send resource_name.underscore
+    end
+
   end
 end
