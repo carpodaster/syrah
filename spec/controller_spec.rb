@@ -26,7 +26,7 @@ RSpec.describe Syrah::Controller do
 
   describe '#resource_name' do
     shared_examples_for 'extracts name from constant' do |constant, name|
-      let!(:controller) { build_controller(constant).new }
+      let!(:controller) { build_controller(name: constant).new }
       subject { controller.send(:resource_name) }
 
       context "extracting #{name.inspect} from #{constant.inspect}" do
