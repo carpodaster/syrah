@@ -174,7 +174,15 @@ RSpec.describe Syrah::Controller do
   end
 
   describe '#resource_association_name' do
-    skip
+    let(:controller) { build_controller(name: 'Name::Space::MyExamplesController') }
+
+    subject { controller.new.send :resource_association_name }
+
+    it 'returns a undescored, pluralized version' do
+      expect(subject).to eql 'my_examples'
+    end
+
+    it { is_expected.to be_frozen }
   end
 
   describe '#resource_association' do

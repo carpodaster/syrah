@@ -48,6 +48,10 @@ module Syrah
       parent_resource_name.present?
     end
 
+    def resource_association_name
+      @resource_association_name ||= resource_name.underscore.pluralize.freeze
+    end
+
     # Delegate to <snakecased resource name>_params in including controller.
     # strong_parameters handling is expected to happen there.
     #
