@@ -37,7 +37,7 @@ module Syrah
     end
 
     def resource_name
-      @resource_name ||= self.class.to_s.split('::').last.gsub(/Controller\Z/, '').singularize
+      @resource_name ||= self.class.to_s.split('::').last.gsub(/Controller\Z/, '').singularize.freeze
     end
 
     def resource_model

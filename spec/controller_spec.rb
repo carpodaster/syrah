@@ -203,6 +203,8 @@ RSpec.describe Syrah::Controller do
       it [msg, "returns 'MyExample'"].to_sentence do
         expect(subject.resource_name).to eql 'MyExample'
       end
+
+      it { expect(subject.resource_name).to be_frozen }
     end
 
     context 'with a top-level controller' do
