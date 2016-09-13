@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = Syrah::VERSION
   s.authors     = ["Carsten Zimmermann"]
   s.email       = ["cz@aegisnet.de"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Syrah."
-  s.description = "TODO: Description of Syrah."
+  s.homepage    = "https://github.com/carpodaster/syrah"
+  s.summary     = "A very, very lightweight RESTful controller abstraction"
+  s.description = "A very, very lightweight RESTful controller abstraction, like a minified version of inherited_resources"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
